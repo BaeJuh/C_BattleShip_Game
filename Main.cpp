@@ -4,28 +4,28 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define UP 1 // À§ 
-#define DOWN 2 // ¾Æ·¡ 
-#define LEFT 3 // ¿ŞÂÊ 
-#define RIGHT 4 // ¿À¸¥ÂÊ 
-#define SPACE 5 // ÀÔ·Â 
+#define UP 1 // ìœ„ 
+#define DOWN 2 // ì•„ë˜ 
+#define LEFT 3 // ì™¼ìª½ 
+#define RIGHT 4 // ì˜¤ë¥¸ìª½ 
+#define SPACE 5 // ì…ë ¥ 
 
 using namespace std;
 
-// ¼¼ÆÃ 
+// ì„¸íŒ… 
 int KeyControl();
 void gotoxy(int x, int y);
 void init();
 
-// °ÔÀÓ 
+// ê²Œì„ 
 void title();
 int Menu();
 void inGame();
 void drawMap(int);
 void Manual();
 
-// Àü¿ªº¯¼ö
-int remark = 28; // ¿ŞÂÊ ¾Æ·¡ ¼³¸í ÁÙ 
+// ì „ì—­ë³€ìˆ˜
+int remark = 28; // ì™¼ìª½ ì•„ë˜ ì„¤ëª… ì¤„ 
  
 int main() {
 	while (true) {
@@ -42,7 +42,7 @@ int main() {
 		else if (MenuCode == 2) {
 			system("cls");
 			gotoxy(38, 5);
-			printf("[ °ÔÀÓ Á¾·á ]");
+			printf("[ ê²Œì„ ì¢…ë£Œ ]");
 			printf("\n\n\n\n\n\n\n\n\n\n");
 			break;
 		}
@@ -52,9 +52,9 @@ int main() {
 	return 0;
 }
 
-void title() { // ¸ŞÀÎÈ­¸éÀ» Ãâ·ÂÇÏ´Â ÇÔ¼ö
+void title() { // ë©”ì¸í™”ë©´ì„ ì¶œë ¥í•˜ëŠ” í•¨ìˆ˜
 	printf("\n\n\n\n\n");
-	printf("				****BATTLESHIP GAME****"); // ¿©¹é 32 Á¦¸ñ 23
+	printf("				****BATTLESHIP GAME****"); // ì—¬ë°± 32 ì œëª© 23
 	printf("\n\n");
 }
 
@@ -72,11 +72,11 @@ int Menu() {
 	printf("\n\n\n");
 	
 	gotoxy(0, remark);
-	printf("ÀÌµ¿ : W, A, S, D È®ÀÎ : SPACE BAR");
+	printf("ì´ë™ : W, A, S, D í™•ì¸ : SPACE BAR");
 	
 	while(true) {
 		int key = KeyControl();
-		switch(key) { // y´Â 8~10 
+		switch(key) { // yëŠ” 8~10 
 			case UP: {
 				if (y > 9) {
 					gotoxy(x-2, y);
@@ -109,67 +109,121 @@ void inGame() {
 	int map_size = 0;
 	int map_x, map_y; 
 	
-	printf("¸ÊÀÇ Å©±â¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä. \nÅ©±â : ");
+	printf("ë§µì˜ í¬ê¸°ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”. \ní¬ê¸° : ");
 	scanf("%d", &map_size);
 	
-	map_x = map_size; // ÀÓ½Ã************************************************** 
+	map_x = map_size; // ì„ì‹œ************************************************** 
 	map_y = map_size;
 	
-	int Map[map_size][map_size]; // ¹è ¾øÀ½ = 0, ¹è ÀÖÀ½ = 1
+	int Map[map_size][map_size]; // ë°° ì—†ìŒ = 0, ë°° ìˆìŒ = 1
 	
-	for (int i=0; i<map_size; i++) { // 2Â÷¿ù ¹è¿­ 0À¸·Î ÃÊ±âÈ­ 
+	for (int i=0; i<map_size; i++) { // 2ì°¨ì›” ë°°ì—´ 0ìœ¼ë¡œ ì´ˆê¸°í™” 
 		for (int j=0; j<map_size; j++) {
 			Map[i][j] = 0;
 		}
 	}
 	
-	// random
+	// ë§µì— ë°° ë„£ê¸° 
 	int ship_size; // rand()%(map_size-2);
 	int ship_locate_x; // rand()%map_size;
 	int ship_locate_y; // rand()%map_size;
-	int ship_direct; // rand()%2; // 0ÀÌ¸é °¡·Î·Î 1ÀÌ¸é ¼¼·Î·Î 
-	int ship_count = 3; // ¹èÀÇ °³¼ö 
+	int ship_direct; // rand()%2; // 0ì´ë©´ ê°€ë¡œë¡œ 1ì´ë©´ ì„¸ë¡œë¡œ 
+	int ship_count = 3; // ë°°ì˜ ê°œìˆ˜
+	bool isShiphere = false; // ë°°ê°€ ê²¹ì¹˜ëŠ” ê²ƒì„ ì œê±°í•˜ê¸° ìœ„í•œ í”Œë˜ê·¸ 
 	
-	for (int i=0; i<ship_count; i++) {
-		ship_size = rand()%(map_size-2);
-		while(ship_size == 0) {
-			ship_size = rand()%(map_size-2);
-		}
+	for (int i=0; i<ship_count; i++) { // ë§µì— ë°° ë„£ê¸° 
+		isShiphere = false;
+		ship_size = rand()%(map_size-2)+1;
 		
 		ship_direct = rand()%2;
-		if (ship_direct == 0) { // ¹èÀÇ ¹æÇâ °¡·Î 
-			ship_locate_x = rand()%(map_size - ship_size);
+		if (ship_direct == 0) { // ë°°ì˜ ë°©í–¥ ê°€ë¡œ 
+			ship_locate_x = rand()%(map_size - ship_size + 1);
 			ship_locate_y = rand()%map_size;
 			
-		} else { // ¹èÀÇ ¹æÇâ ¼¼·Î 
+		} else { // ë°°ì˜ ë°©í–¥ ì„¸ë¡œ 
 			ship_locate_x = rand()%map_size;
-			ship_locate_y = rand()%(map_size - ship_size);
+			ship_locate_y = rand()%(map_size - ship_size + 1);
 		}
-		cout << ship_locate_x << " " << ship_locate_y << " " << ship_direct << " " << ship_size << endl;
+		
 		for (int j=0; j<ship_size; j++) {
-			// ¹è ³Ö±â 
-			if (ship_direct == 0) { // ¹èÀÇ ¹æÇâ °¡·Î 
-				Map[ship_locate_y][ship_locate_x + j] = 1;
-			} else { // ¹èÀÇ ¹æÇâ ¼¼·Î 
-				Map[ship_locate_y + j][ship_locate_x] = 1;
+			if (ship_direct == 0 && Map[ship_locate_y][ship_locate_x + j] == 1) { 
+				isShiphere = true;
+				break;
+			} else if (ship_direct == 1 && Map[ship_locate_y + j][ship_locate_x] == 1) {
+				isShiphere = true;
+				break;
 			}
+		}	
+		if (isShiphere == false) {
+			for (int j=0; j<ship_size; j++) {
+				 
+				if (ship_direct == 0) { // ë°°ì˜ ë°©í–¥ ê°€ë¡œ 
+					Map[ship_locate_y][ship_locate_x + j] = 1;
+				} else { // ë°°ì˜ ë°©í–¥ ì„¸ë¡œ 
+					Map[ship_locate_y + j][ship_locate_x] = 1;
+				}
+			}
+			cout << ship_locate_x << " " << ship_locate_y << " " << ship_direct << " " << ship_size << endl;
+		} else {
+			i--;
 		}
 	}
 	
 	printf("\n\n------------------------------\n");
-	for (int i=0; i<map_size; i++) { // 2Â÷¿ù ¹è¿­ 0À¸·Î ÃÊ±âÈ­ 
+	for (int i=0; i<map_size; i++) { // 2ì°¨ì›” ë°°ì—´ 0ìœ¼ë¡œ ì´ˆê¸°í™” 
 		for (int j=0; j<map_size; j++) {
 			if (Map[i][j] == 0) {
-				printf("¡á");
+				printf("â– ");
 			}
 			else {
-				printf("¡à");
+				printf("â–¡");
 			}
 		}
 		printf("\n");
 	}
 	printf("\n------------------------------\n");
-
+	
+	// ê²Œì„í”Œë ˆì´ 
+	
+	bool isShipAlive = true;
+	int flag = 0;
+	int x, y;
+	int BattleField[map_size][map_size];
+	for (int i=0; i<map_size; i++) { 
+		for (int j=0; j<map_size; j++) {
+			BattleField[i][j] = 0;
+		}
+	}
+	
+	while(isShipAlive) {
+		system("cls");
+		printf("turn start\n");
+		for (int i=0; i<map_size; i++) { 
+			for (int j=0; j<map_size; j++) {
+				printf("%d ", BattleField[i][j]);
+			}
+			printf("\n");
+		}
+		printf("ì¢Œí‘œë¥¼ ì…ë ¥í•˜ì„¸ìš” : ");
+		scanf("%d %d", &x, &y);
+		
+		y = y-1;
+		x = x-1;
+		
+		if (Map[y][x]) {
+			BattleField[y][x] = 1;
+			Map[y][x] = 0;
+		} else {
+			BattleField[y][x] = 2;
+		}
+		
+		for (int i=0; i<map_size; i++) { 
+			for (int j=0; j<map_size; j++) {
+				if ()
+			}
+		}
+	}
+	
 	while(true) {
 		int key = KeyControl();
 		if (key == SPACE) {
@@ -178,25 +232,25 @@ void inGame() {
 	}
 }
 
-void drawMap(int size) { // ¡à ¡á 
+void drawMap(int size) { // â–¡ â–  
+	string Map[size][size];
 	for (int i=0; i<size; i++) {
 		for (int j=0; j<size; j++) {
-			printf("¡á");
+			Map[i][j] = "â– ";
 		}
-		printf("\n");
 	}
 }
 
 void Manual() {
 	system("cls");
 	gotoxy(38, 5);
-	printf("[ Á¶ÀÛ¹ı ]");
+	printf("[ ì¡°ì‘ë²• ]");
 	gotoxy(26, 8);
-	printf("ÁÂÇ¥¸¦ ÀÔ·ÂÇÏ¸é ´ëÆ÷¸¦ ¹ß»çÇÕ´Ï´Ù.");
+	printf("ì¢Œí‘œë¥¼ ì…ë ¥í•˜ë©´ ëŒ€í¬ë¥¼ ë°œì‚¬í•©ë‹ˆë‹¤.");
 	gotoxy(32, 11);
-	printf("ÁÂÇ¥ ÀÔ·Â ¿¹½Ã : 7 7");
+	printf("ì¢Œí‘œ ì…ë ¥ ì˜ˆì‹œ : 7 7");
 	gotoxy(0, remark);
-	printf("SPACEBAR¸¦ ´©¸£¸é ¸ŞÀÎÀ¸·Î µ¹¾Æ°©´Ï´Ù.");
+	printf("SPACEBARë¥¼ ëˆ„ë¥´ë©´ ë©”ì¸ìœ¼ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤.");
 	
 	while(true) {
 		int key = KeyControl();
@@ -211,7 +265,7 @@ void gotoxy(int x,int y) {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos); 
 }
 
-int KeyControl() { // w, a, s, d¸¦ ÅëÇØ ÀÌµ¿, spacebar¸¦ ÅëÇØ ÀÔ·Â 
+int KeyControl() { // w, a, s, dë¥¼ í†µí•´ ì´ë™, spacebarë¥¼ í†µí•´ ì…ë ¥ 
 	char key = getch();
 	
 	if (key == 'w' || key == 'W') {

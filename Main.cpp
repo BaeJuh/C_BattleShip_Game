@@ -197,6 +197,7 @@ void inGame() {
 	
 	while(isShipAlive) {
 		system("cls");
+		flag = 0;
 		printf("turn start\n");
 		for (int i=0; i<map_size; i++) { 
 			for (int j=0; j<map_size; j++) {
@@ -219,10 +220,19 @@ void inGame() {
 		
 		for (int i=0; i<map_size; i++) { 
 			for (int j=0; j<map_size; j++) {
-				if ()
+				if (Map[i][j] == 1) {
+					flag ++;
+					printf("남아잇음");
+					Sleep(100);
+				}
 			}
 		}
+		if (flag == 0) {
+			isShipAlive = false;
+		}
 	}
+	
+	printf("게임 종료");
 	
 	while(true) {
 		int key = KeyControl();

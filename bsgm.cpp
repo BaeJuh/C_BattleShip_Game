@@ -112,9 +112,6 @@ void inGame() {
 	printf("맵의 크기를 입력해주세요. \n크기 : ");
 	scanf("%d", &map_size);
 	
-	map_x = map_size; // 임시************************************************** 
-	map_y = map_size;
-	
 	int Map[map_size][map_size]; // 배 없음 = 0, 배 있음 = 1
 	
 	for (int i=0; i<map_size; i++) { // 2차월 배열 0으로 초기화 

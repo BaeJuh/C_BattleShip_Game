@@ -1,3 +1,10 @@
+
+		
+		if (MenuCode == 0) {
+			inGame();
+		}
+		else if (MenuCode == 1) {
+			Manual();
 #include <iostream>
 #include <Windows.h>
 #include <conio.h>
@@ -112,6 +119,9 @@ void inGame() {
 	printf("맵의 크기를 입력해주세요. \n크기 : ");
 	scanf("%d", &map_size);
 	
+	map_x = map_size; // 임시************************************************** 
+	map_y = map_size;
+	
 	int Map[map_size][map_size]; // 배 없음 = 0, 배 있음 = 1
 	
 	for (int i=0; i<map_size; i++) { // 2차월 배열 0으로 초기화 
@@ -183,6 +193,7 @@ void inGame() {
 	// 게임플레이 
 	
 	bool isShipAlive = true;
+	int flag = 0;
 	int x, y;
 	int BattleField[map_size][map_size];
 	for (int i=0; i<map_size; i++) { 
@@ -191,8 +202,9 @@ void inGame() {
 		}
 	}
 	
-	printf("ingame\n");
 	while(isShipAlive) {
+		system("cls");
+		flag = 0;
 		printf("turn start\n");
 		for (int i=0; i<map_size; i++) { 
 			for (int j=0; j<map_size; j++) {
@@ -205,15 +217,28 @@ void inGame() {
 		
 		y = y-1;
 		x = x-1;
-		printf("입력값 : %d %d\n", x, y);
-		if (Map[y][x] == 1) {
-			printf("맞음\n");
-			BattleField[y][x] == 1;
+		
+		if (Map[y][x]) {
+			BattleField[y][x] = 1;
+			Map[y][x] = 0;
 		} else {
-			printf("안맞음\n");
-			BattleField[y][x] == 2;
+			BattleField[y][x] = 2;
+		}
+		
+		for (int i=0; i<map_size; i++) { 
+			for (int j=0; j<map_size; j++) {
+				if (Map[i][j] == 1) {
+					flag ++;
+					Sleep(100);
+				}
+			}
+		}
+		if (flag == 0) {
+			isShipAlive = false;
 		}
 	}
+	
+	printf("게임 종료");
 	
 	while(true) {
 		int key = KeyControl();

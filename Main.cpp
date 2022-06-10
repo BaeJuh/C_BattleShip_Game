@@ -197,13 +197,14 @@ void inGame() {
 		}
 	}
 	
+	bool QUIT = false;
 	while(isShipAlive) {
 		system("cls");
 		
 		gotoxy(0, remark-1);
 		printf(" O : 맞춤, X : 빗나감");
 		gotoxy(0, remark);
-		printf("정수만 입력해주세요. (예시 : %d %d)", map_size-2, map_size-2);
+		printf("정수만 입력해주세요. (0 입력 시 게임 종료)", map_size-2, map_size-2);
 		
 		flag = 0;
 		gotoxy(34, 4);
@@ -216,8 +217,40 @@ void inGame() {
 			printf("\n");
 		}
 		
-		printf("\n\n\t\t\t\t   좌표를 입력하세요 : ");
-		scanf("%d %d", &x, &y);
+		printf("\n\n\t\t\t\t    좌표를 입력하세요 : ");
+		gotoxy(40, 10+map_size);
+		printf("X 좌표 : ");
+		scanf("%d", &x);
+		
+		while(x<1 || x>map_size) {
+			if (x == 0) {
+				QUIT = true;
+				break; 
+			}
+			gotoxy(26, 10+map_size);
+			printf("X 좌표 ( 1~%d 사이 숫자만 입력해주세요. ): ", map_size);
+			scanf("%d", &x);
+		}
+		if (QUIT) {
+			system("cls");
+			break;
+		}
+		gotoxy(40, 11+map_size);
+		printf("Y 좌표 : ");
+		scanf("%d", &y);
+		while(y<1 || y>map_size) {
+			if (y == 0) {
+				QUIT = true;
+				break; 
+			}
+			gotoxy(26, 11+map_size);
+			printf("Y 좌표 ( 1~%d 사이 숫자만 입력해주세요. ): ", map_size);
+			scanf("%d", &y);
+		}
+		if (QUIT) {
+			system("cls");
+			break;
+		}
 		
 		y = y-1;
 		x = x-1;
@@ -225,6 +258,7 @@ void inGame() {
 		if (Map[y][x]) {
 			BattleField[y][x] = 'O';
 			Map[y][x] = 0;
+			flag --;
 		} else {
 			BattleField[y][x] = 'X';
 		}
@@ -241,7 +275,13 @@ void inGame() {
 		}
 	}
 	
-	printf("게임 종료");
+	gotoxy(40, 5);
+	if (flag == 0) {
+		printf("[ 게임 승리 ]");
+	} else {
+		printf("[ 게임 종료 ]");
+	}
+	
 	
 	while(true) {
 		int key = KeyControl();
@@ -254,13 +294,13 @@ void inGame() {
 // 메뉴창 
 void Manual() {
 	system("cls");
-	gotoxy(38, 5);
+	gotoxy(40, 5);
 	printf("[ 조작법 ]");
-	gotoxy(26, 8);
+	gotoxy(29, 8);
 	printf("좌표를 입력하면 대포를 발사합니다.");
-	gotoxy(32, 11);
-	printf("좌표 입력 예시 : 7 7");
-	gotoxy(27, 15);
+	gotoxy(24, 11);
+	printf("X와 Y 좌표에 각각 정수를 입력해줘야 합니다.");
+	gotoxy(30, 15);
 	printf("Made by 2018265133 Insole Hwang");
 	gotoxy(0, remark);
 	printf("SPACEBAR를 누르면 메인으로 돌아갑니다.");

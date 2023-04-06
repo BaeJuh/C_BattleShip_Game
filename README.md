@@ -1,2 +1,2 @@
 # C_BattleShip_Game
-# C++ 왕초보 TT
+# C++ 콘솔 창으로 플레이하는 게임

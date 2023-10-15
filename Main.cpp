@@ -301,7 +301,7 @@ void Manual() {
 	gotoxy(24, 11);
 	printf("X와 Y 좌표에 각각 정수를 입력해줘야 합니다.");
 	gotoxy(30, 15);
-	printf("Made by 2018265133 Insole Hwang");
+	printf("Made by 2018250024 Juhwan Bae");
 	gotoxy(0, remark);
 	printf("SPACEBAR를 누르면 메인으로 돌아갑니다.");
 	
